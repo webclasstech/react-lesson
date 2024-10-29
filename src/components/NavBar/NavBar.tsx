@@ -30,10 +30,13 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
       .then((theDataAsObj) => {
         // if (theDataAsObj.loginCorrect) {
         //TODO here
+        console.log(theDataAsObj);
         setIsLoggedIn(true);
         // }
       });
+    console.log(response);
   };
+
   return (
     <div className="NavBar">
       <div>
