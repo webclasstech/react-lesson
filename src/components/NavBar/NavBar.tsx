@@ -2,23 +2,26 @@ import { Link } from "react-router-dom";
 
 import "./NavBar.css";
 import { NavItem } from "../../types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MyFirstContext } from "../../state/MyFirstContext";
 
 const NavBar = (props: { navbarArr: NavItem[] }) => {
   const { someNum, someStr, isLoggedIn, setIsLoggedIn } =
     useContext(MyFirstContext);
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const checkLoginDetails = () => {
-    let theLoginData = {
-      username: "",
-      password: "",
-    };
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const response = fetch("https://reqres.in/api/users", {
       method: "POST",
-      body: JSON.stringify(theLoginData),
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
       headers: myHeaders,
     })
       .then((theData) => {
@@ -49,8 +52,20 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
 
         {!isLoggedIn && (
           <div className="NavBar_LoginDetails">
-            <input type="text" placeholder="username" />
-            <input type="text" placeholder="password" />
+            <input
+              type="text"
+              placeholder="username"
+              onInput={(e) => {
+                setUsername((e.target as HTMLInputElement).value);
+              }}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              onInput={(e) => {
+                setPassword((e.target as HTMLInputElement).value);
+              }}
+            />
             <input type="button" value="login" onClick={checkLoginDetails} />
           </div>
         )}
