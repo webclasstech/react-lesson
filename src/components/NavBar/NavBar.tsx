@@ -6,8 +6,31 @@ import { useContext } from "react";
 import { MyFirstContext } from "../../state/MyFirstContext";
 
 const NavBar = (props: { navbarArr: NavItem[] }) => {
-  const { someNum, someStr, isLoggedIn } = useContext(MyFirstContext);
+  const { someNum, someStr, isLoggedIn, setIsLoggedIn } =
+    useContext(MyFirstContext);
+  const checkLoginDetails = () => {
+    let theLoginData = {
+      username: "",
+      password: "",
+    };
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
+    const response = fetch("https://reqres.in/api/users", {
+      method: "POST",
+      body: JSON.stringify(theLoginData),
+      headers: myHeaders,
+    })
+      .then((theData) => {
+        return theData.json();
+      })
+      .then((theDataAsObj) => {
+        // if (theDataAsObj.loginCorrect) {
+        //TODO here
+        setIsLoggedIn(true);
+        // }
+      });
+  };
   return (
     <div className="NavBar">
       <div>
@@ -22,8 +45,15 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
         );
       })}
       <div>
-        {!isLoggedIn && <h3>{"Please Login"}</h3>}
-        {isLoggedIn && <h3>{"Hello!"}</h3>}
+        <h3>{isLoggedIn ? "hello" : "Please Login"}</h3>
+
+        {!isLoggedIn && (
+          <div className="NavBar_LoginDetails">
+            <input type="text" placeholder="username" />
+            <input type="text" placeholder="password" />
+            <input type="button" value="login" onClick={checkLoginDetails} />
+          </div>
+        )}
       </div>
     </div>
   );
