@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import "./App.css";
+
+import { SpeakersGallery } from "./components/SpeakersGallery/SpeakersGallery";
+import { MyFirstProvider } from "./state/MyFirstContext";
+import NavBar from "./components/NavBar/NavBar";
+import { arrForNav } from "./components/NavBar/NavBarInfo";
+import { BrowserRouter } from "react-router-dom";
+import { CompC } from "./components/DemoTheContext/CompC/CompC";
+// import NavBar from "./components/NavBar/NavBar";
+// import { arrForNav } from "./components/NavBar/NavBarInfo";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <MyFirstProvider>
+          <NavBar navbarArr={arrForNav} />
+          <hr />
+          <CompC />
+          <hr />
+          <SpeakersGallery />
+        </MyFirstProvider>
+      </BrowserRouter>
     </div>
   );
 }
