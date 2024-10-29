@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { MyFirstContext } from "../../state/MyFirstContext";
 
 const NavBar = (props: { navbarArr: NavItem[] }) => {
-  const { someNum, someStr } = useContext(MyFirstContext);
+  const { someNum, someStr, isLoggedIn } = useContext(MyFirstContext);
 
   return (
     <div className="NavBar">
@@ -21,6 +21,10 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
           </div>
         );
       })}
+      <div>
+        {!isLoggedIn && <h3>{"Please Login"}</h3>}
+        {isLoggedIn && <h3>{"Hello!"}</h3>}
+      </div>
     </div>
   );
 };

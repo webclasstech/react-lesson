@@ -12,6 +12,9 @@ interface cntxVals {
 
   theClickedPerson: Person;
   setTheClickedPerson: Dispatch<SetStateAction<Person>>;
+
+  isLoggedIn: boolean;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
 //2nd part: giving values to everithing that is available in our context
@@ -32,6 +35,8 @@ export const MyFirstContext = createContext<cntxVals>({
     },
   },
   setTheClickedPerson: () => {},
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
 });
 
 //3rd part: code which will actually return the values of everythin thats in "1st part"
@@ -51,6 +56,8 @@ export const MyFirstProvider: React.FC<React.PropsWithChildren<{}>> = ({
       large: "NA",
     },
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   let theVals = {
     someNum,
     setSomeNum,
@@ -58,6 +65,8 @@ export const MyFirstProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setSomeStr,
     theClickedPerson,
     setTheClickedPerson,
+    isLoggedIn,
+    setIsLoggedIn,
   };
 
   return (
