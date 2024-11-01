@@ -9,32 +9,45 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
   const { someNum, someStr, isLoggedIn, setIsLoggedIn } =
     useContext(MyFirstContext);
 
+  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const checkLoginDetails = () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const response = fetch("https://reqres.in/api/users", {
-      method: "POST",
-      body: JSON.stringify({
+    console.log(
+      JSON.stringify({
         username: username,
         password: password,
-      }),
-      headers: myHeaders,
-    })
-      .then((theData) => {
-        return theData.json();
       })
-      .then((theDataAsObj) => {
-        // if (theDataAsObj.loginCorrect) {
-        //TODO here
-        console.log(theDataAsObj);
-        setIsLoggedIn(true);
-        // }
-      });
-    console.log(response);
+    );
+    try {
+      const response = fetch(
+        "https://cyberstars.onrender.com/qa-exercises/login/json",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        }
+      )
+        .then((theData) => {
+          console.log(theData);
+          return theData.json();
+        })
+        .then((theDataAsObj) => {
+          console.log(theDataAsObj);
+          setIsLoggedIn(theDataAsObj.loginCorrect);
+          setName(theDataAsObj.salutation + " " + theDataAsObj.personName);
+        });
+      console.log(response);
+    } catch (error) {
+      console.error("Error occurred during login:", error);
+    }
   };
 
   return (
@@ -51,7 +64,7 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
         );
       })}
       <div>
-        <h3>{isLoggedIn ? "hello" : "Please Login"}</h3>
+        <h3>{isLoggedIn ? `Hello ${name}` : "Please Login"}</h3>
 
         {!isLoggedIn && (
           <div className="NavBar_LoginDetails">
