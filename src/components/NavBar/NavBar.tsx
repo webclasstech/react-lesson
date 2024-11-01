@@ -6,26 +6,26 @@ import { useContext, useState } from "react";
 import { MyFirstContext } from "../../state/MyFirstContext";
 
 const NavBar = (props: { navbarArr: NavItem[] }) => {
-  const { someNum, someStr, isLoggedIn, setIsLoggedIn } =
-    useContext(MyFirstContext);
+  const {
+    someNum,
+    someStr,
+    isLoggedIn,
+    setIsLoggedIn,
+    salutation,
+    setSalutation,
+    personName,
+    setPersonName,
+  } = useContext(MyFirstContext);
 
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const checkLoginDetails = () => {
-    console.log(
-      JSON.stringify({
-        username: username,
-        password: password,
-      })
-    );
     try {
       const response = fetch(
         "https://cyberstars.onrender.com/qa-exercises/login/json",
         {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json",
           },
@@ -36,15 +36,13 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
         }
       )
         .then((theData) => {
-          console.log(theData);
           return theData.json();
         })
         .then((theDataAsObj) => {
-          console.log(theDataAsObj);
           setIsLoggedIn(theDataAsObj.loginCorrect);
-          setName(theDataAsObj.salutation + " " + theDataAsObj.personName);
+          setSalutation(theDataAsObj.salutation);
+          setPersonName(theDataAsObj.personName);
         });
-      console.log(response);
     } catch (error) {
       console.error("Error occurred during login:", error);
     }
@@ -64,7 +62,9 @@ const NavBar = (props: { navbarArr: NavItem[] }) => {
         );
       })}
       <div>
-        <h3>{isLoggedIn ? `Hello ${name}` : "Please Login"}</h3>
+        <h3>
+          {isLoggedIn ? `Hello ${salutation} ${personName}` : "Please Login"}
+        </h3>
 
         {!isLoggedIn && (
           <div className="NavBar_LoginDetails">
